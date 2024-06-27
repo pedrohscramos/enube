@@ -32,6 +32,8 @@ require (
 )
 
 require (
+	github.com/go-chi/chi v1.5.5
+	github.com/go-chi/chi/v5 v5.0.14
 	github.com/goccy/go-json v0.3.5 // indirect
 	github.com/google/uuid v1.6.0
 	github.com/lestrrat-go/backoff/v2 v2.0.7 // indirect
