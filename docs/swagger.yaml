@@ -1,0 +1,279 @@
+basePath: /
+definitions:
+  dto.CreateUserInput:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.GetJWTInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.GetJWTOutput:
+    properties:
+      access_token:
+        type: string
+    type: object
+  entity.Supplier:
+    properties:
+      additional_info:
+        type: string
+      availability_id:
+        type: string
+      benefit_id:
+        type: string
+      benefit_ordert_id:
+        type: string
+      benefit_type:
+        type: string
+      billing_currency:
+        type: string
+      billing_pre_tax_total:
+        type: number
+      charge_end_date:
+        type: string
+      charge_start_date:
+        type: string
+      charge_type:
+        type: string
+      consumed_service:
+        type: string
+      credit_percentage:
+        type: integer
+      credit_type:
+        type: string
+      customer_country:
+        type: string
+      customer_domain_name:
+        type: string
+      customer_id:
+        type: string
+      customer_name:
+        type: string
+      effective_unit_price:
+        type: number
+      entilement_description:
+        type: string
+      entilement_id:
+        type: string
+      id:
+        type: integer
+      invoice_number:
+        type: string
+      meter_category:
+        type: string
+      meter_id:
+        type: string
+      meter_name:
+        type: string
+      meter_region:
+        type: string
+      meter_sub_category:
+        type: string
+      meter_type:
+        type: string
+      mpn_id:
+        type: integer
+      partner_earned_credit_percentage:
+        type: integer
+      partner_id:
+        type: string
+      partner_name:
+        type: string
+      pc_to_bc_exchange_rate:
+        type: integer
+      pc_to_bc_exchange_rate_date:
+        type: string
+      pricing_currency:
+        type: string
+      pricing_pre_tax_total:
+        type: number
+      product_id:
+        type: string
+      product_name:
+        type: string
+      publisher_id:
+        type: integer
+      publisher_name:
+        type: string
+      quantity:
+        type: number
+      resource_group:
+        type: string
+      resource_location:
+        type: string
+      resource_uri:
+        type: string
+      service_info1:
+        type: string
+      service_info2:
+        type: string
+      sku_id:
+        type: string
+      sku_name:
+        type: string
+      subscription_description:
+        type: string
+      subscription_id:
+        type: string
+      tags:
+        type: string
+      tier2_mpn_id:
+        type: integer
+      unit:
+        type: string
+      unit_price:
+        type: number
+      unit_type:
+        type: string
+      usage_date:
+        type: string
+    type: object
+  handlers.Error:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: pedrohscramos@gmail.com
+    name: Pedro ramos
+  description: Api para gerenciamento de fornecedores
+  termsOfService: http://swagger.io/terms/
+  title: API Enube
+  version: "1.0"
+paths:
+  /suppliers:
+    get:
+      consumes:
+      - application/json
+      description: get all suppliers
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Supplier'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: List suppliers
+      tags:
+      - suppliers
+  /suppliers/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a supplier
+      parameters:
+      - description: supplier ID
+        format: int
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Supplier'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a supplier
+      tags:
+      - suppliers
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      parameters:
+      - description: user request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUserInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.Error'
+      summary: Create user
+      tags:
+      - users
+  /users/generate_token:
+    post:
+      consumes:
+      - application/json
+      description: Get a user JWT
+      parameters:
+      - description: user credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetJWTInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetJWTOutput'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.Error'
+      summary: Get a user JWT
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
